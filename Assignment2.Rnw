@@ -1,0 +1,141 @@
+\documentclass{article}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+
+\title {Combined Income and Payroll Taxes for Married Couples} 
+\author { Revanth R Arjula 
+\\ School of Information Technology 
+\\ Illinois State University
+\\
+\texttt{rarjula@ilstu.edu}}
+\date{\today} 
+\maketitle 
+
+\begin{abstract}
+  This Document defines and depicts the tax details of married couple with and without children separately , across the years. 
+\end{abstract}
+
+
+\section{Introduction}
+
+        In the US, income tax is applied by the federal, state and mostly by local government, on the income of  its citizens this is done by fixing a certain taxation percentage, and which is not constant all the time and differs according to the time. Taxes can be imposed on individuals, couples, partnerships, firms. 
+        
+
+                     The Tax rate at the federal level graduated, meaning, rate of tax is higher for higher incomes compared to lower incomes. The federal tax rate for the year 2013 ranged from 10 - 39  \% , the tax rate and deductions will be different depending on the filing status. Filing can be done in the few of the below mentioned processes, 
+                     
+
+1.  Individual Filing 
+
+2.	Combined Married Couple  Filing 
+
+3.	Married couple Filing Separately 
+
+Now, we are going to discuss few merits and demerits of Combined Married Couple Tax Filing
+
+
+       Joint Assessment is usually the most favorable basis of assessment for a couple in a marriage. One of the spouses - the assessable spouse, assumes the responsibility for the joint tax liability. The other spouse is called the non-assessable spouse partner. The Assessable Spouse is
+       
+
+1.	Assessed on the combined total income. 
+
+2.	Receives combined tax credits and standard rate bands.
+
+3.	Responsible to file joint tax return and include full details of couples combined income 
+
+
+      The Couple will have to choose among themselves or nominate, who is going to be the assessable spouse and who is not, unavailability of the nomination will make the spouse with higher income the assessable spouse. The advantage is that only one person has to go through all the tedious process, in this case the assessable spouse. 
+      
+
+     Filing Taxes jointly as a couple can help reduce the tax burden to an extent. Depending on the incomes, marriage penalties can be avoided, if the tax paying spouses have substantially different salaries, the one with lower salary can pull the one with higher salary down to a lower tax amount, reducing the overall taxes.
+     
+
+      And when a married couple filing a separate assessment it does not mean that they are single or something , it means that you are married and filing your own return such that you do not take legal responsibility of your spouses return and your income and taxes are calculated separately.
+      
+
+\section{Data Analysis}
+
+      In This Section we are going to explain the process converting a dataset into a meaningful Graph that is  importing the data from QUANDL API and , Exploring the data and finally making out some useful graphs on Combined income and payroll taxes for married couples.
+      
+Below is the process of gathering the data from QUANDL API , 
+  
+    
+<<>>=
+
+#Installing quandl packages and using authcode to retrieve data
+
+library(Quandl)
+
+cdata <- Quandl("TPC/MARRIEDINCOMEPAYROLLTAXES",authcode="MMRo4mutzfKbaTp6gMzj")
+
+@
+
+Now we have the QUANDL data into the cdata dataframe , which we will be performing some cleaning operations , and our data looks to be very clean which does not need much of a formatting , This data is pretty much usable directly.
+
+
+<<width=20>>=
+
+cdata
+
+@
+
+Above we can see the entire table data with all the data in it. we have a total of 17 rows in the table displying the combined income and payroll taxes yearly for married couples with no children , 1 Child , 2 Children , 4 Children. the data clearly explains how tax rates are being changed from year to year and for families with different number of children.
+
+
+<<>>=
+
+str(cdata)
+
+@
+
+In the above code chunk we can see the structure of the table or the data we have extracted or cleaned , it gives us the details of the column names , types of data that the column is displying and also displays partial data , that is few data values 
+
+<<>>=
+
+head(cdata)
+
+@
+
+The Above code chunk refers to the head command which actually displays the few portion of data , this is used especially when there are a million records in the data table and you do not want to display all of the records on the document.
+
+
+<<>>=
+
+colnames(cdata)<-c("Date","no_children","one_child","two_children","four_children")
+
+@
+
+ As we will be needing some meaningful column names , the above code chunk helps us to rename all the columns in the data frame. some times when we have some arithmetic operators and special charecters in the column names we will face problems in running our code , to avoid such situations , we should be using appropriate column names.
+
+
+<<fig=TRUE>>=
+
+#We will be using ggplot2
+
+library(ggplot2)
+ggplot(data = cdata , aes(x=Date)) + ylab("") + 
+  geom_line(aes(y=no_children,color="0children"))+
+  geom_line(aes(y=one_child,color="1child"))+
+  geom_line(aes(y=two_children,color="2children"))+
+  geom_line(aes(y=four_children,color="4children"))
+
+@
+
+The above Line graph is plotted against the data that we have obtained and cleaned , it plots all the values in the table , 
+
+on the X axis are the year details ranging from 1970 to 2011 ,
+
+on the Y axis is the amount of tax that is being imposed on the married couple ,
+
+orange line indicates the tax amount of married couples with no children , 
+
+green line indicates the tax amount of married couple with 1 child ,
+
+blue line indicates the tax amount of married couple with 2 children ,
+
+purple line indicates the tax amount of married couple with 4 children.
+
+
+
+
+\end{document}
